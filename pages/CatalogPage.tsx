@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { PRODUCTS } from '../constants';
+import { getStoredProducts } from '../constants';
 import ProductCard from '../components/ProductCard';
 import { Filter, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { Level, FileType } from '../types';
@@ -10,19 +10,20 @@ const CatalogPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false); // Mobile toggle
 
   const toggleLevel = (level: Level) => {
-    setSelectedLevels(prev => 
+    setSelectedLevels(prev =>
       prev.includes(level) ? prev.filter(l => l !== level) : [...prev, level]
     );
   };
 
   const toggleFileType = (type: FileType) => {
-    setSelectedFileTypes(prev => 
+    setSelectedFileTypes(prev =>
       prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
     );
   };
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter(product => {
+    const products = getStoredProducts();
+    return products.filter(product => {
       const levelMatch = selectedLevels.length === 0 || selectedLevels.includes(product.level);
       const typeMatch = selectedFileTypes.length === 0 || selectedFileTypes.includes(product.fileType);
       return levelMatch && typeMatch;
@@ -43,14 +44,14 @@ const CatalogPage: React.FC = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-10">
-        
+
         {/* Mobile Filter Toggle */}
-        <button 
+        <button
           className="lg:hidden w-full bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between font-bold text-text-main"
           onClick={() => setShowFilters(!showFilters)}
         >
-            <span className="flex items-center gap-2"><Filter size={20} /> Filter</span>
-            <ChevronDown className={`transform transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+          <span className="flex items-center gap-2"><Filter size={20} /> Filter</span>
+          <ChevronDown className={`transform transition-transform ${showFilters ? 'rotate-180' : ''}`} />
         </button>
 
         {/* Sidebar */}
@@ -60,7 +61,7 @@ const CatalogPage: React.FC = () => {
               <h3 className="font-bold text-lg text-text-main flex items-center gap-2 font-display">
                 <SlidersHorizontal className="text-primary" size={20} /> Filter
               </h3>
-              <button 
+              <button
                 onClick={() => { setSelectedLevels([]); setSelectedFileTypes([]); }}
                 className="text-xs bg-primary/10 text-primary-dark hover:bg-primary/20 px-3 py-1.5 rounded-full font-bold transition-colors font-body"
               >
@@ -76,8 +77,8 @@ const CatalogPage: React.FC = () => {
               <div className="space-y-3">
                 {levels.map(level => (
                   <label key={level} className="flex items-center gap-3 cursor-pointer group p-2 hover:bg-slate-50 rounded-xl transition-colors">
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       className="w-5 h-5 rounded-md text-primary focus:ring-primary border-2 border-slate-300 bg-white"
                       checked={selectedLevels.includes(level)}
                       onChange={() => toggleLevel(level)}
@@ -98,8 +99,8 @@ const CatalogPage: React.FC = () => {
               <div className="space-y-3">
                 {fileTypes.map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer group p-2 hover:bg-slate-50 rounded-xl transition-colors">
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       className="w-5 h-5 rounded-md text-primary focus:ring-primary border-2 border-slate-300 bg-white"
                       checked={selectedFileTypes.includes(type)}
                       onChange={() => toggleFileType(type)}
@@ -118,19 +119,19 @@ const CatalogPage: React.FC = () => {
         {/* Grid */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-6 font-body">
-             <p className="text-slate-500">Menampilkan <span className="font-bold text-text-main">{filteredProducts.length}</span> produk</p>
+            <p className="text-slate-500">Menampilkan <span className="font-bold text-text-main">{filteredProducts.length}</span> produk</p>
           </div>
-          
+
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-                {filteredProducts.map(product => (
+              {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
-                ))}
+              ))}
             </div>
           ) : (
             <div className="text-center py-20">
-                <p className="text-xl font-bold text-slate-400 font-display">Yah, produk tidak ditemukan :(</p>
-                <p className="text-slate-400 font-body">Coba atur ulang filter kamu ya!</p>
+              <p className="text-xl font-bold text-slate-400 font-display">Yah, produk tidak ditemukan :(</p>
+              <p className="text-slate-400 font-body">Coba atur ulang filter kamu ya!</p>
             </div>
           )}
         </div>

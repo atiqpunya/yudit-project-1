@@ -1,6 +1,15 @@
 import { Product } from "./types";
 
-export const PRODUCTS: Product[] = [
+export interface AppSettings {
+  whatsappNumber: string;
+  adminPassword?: string;
+}
+
+const DEFAULT_SETTINGS: AppSettings = {
+  whatsappNumber: "6281234567890", // Ganti dengan nomor Umma
+};
+
+const DEFAULT_PRODUCTS: Product[] = [
   {
     id: "1",
     title: "Paket Modul Ajar Aljabar - Kurikulum Merdeka",
@@ -40,7 +49,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "4",
     title: "Template Analisis Nilai & Raport K13",
-    description: "Excel otomatis untuk menghitung rata-rata, konversi nilai, dan cetak raport sementara. Rumus sudah ditanam.",
+    description: "Excel otomatis untuk menghitung rata-rata, konversi nilai, and cetak raport sementara. Rumus sudah ditanam.",
     price: 80000,
     originalPrice: 100000,
     level: "SMA / SMK",
@@ -75,4 +84,34 @@ export const PRODUCTS: Product[] = [
   }
 ];
 
+// Storage Keys
+const STORAGE_KEYS = {
+  PRODUCTS: "umma_products",
+  SETTINGS: "umma_settings",
+};
+
+// Storage Helpers
+export const getStoredProducts = (): Product[] => {
+  const stored = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+  return stored ? JSON.parse(stored) : DEFAULT_PRODUCTS;
+};
+
+export const saveStoredProducts = (products: Product[]) => {
+  localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+};
+
+export const getStoredSettings = (): AppSettings => {
+  const stored = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+  return stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
+};
+
+export const saveStoredSettings = (settings: AppSettings) => {
+  localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+};
+
+// Exports for backward compatibility
+export const PRODUCTS = getStoredProducts();
+export const SETTINGS = getStoredSettings();
+
 export const DETAIL_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuB9zabaELWnFvnil3n-5SzkoJu_zMqWMCMoIZrIgw3799qo5aIi7Ved58DHLFYwVuyqDOvBl_xx_sVTz2uZMa1vcR6j2yPoWJVGQdKFlp02FPQp00qzckbCoArlCPaqxedtjfXhGTBGpqurB3zTZQZctwtwTEnYTIa3xQiJuOQhqKGcIb_G8gAkV_fUD5qTpRtlGuaqlD6cm9ajUlmUHQbe-ubRYzbd8E1pLGmg79GfBVaTfhrhv0Ke5L7hAmyKCFYHytDBOeRbnjA";
+
