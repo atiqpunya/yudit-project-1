@@ -298,6 +298,16 @@ const AdminPage: React.FC = () => {
                                         placeholder="https://..."
                                     />
                                 </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Link Pembelian (Lynk.id / Shopee / dll)</label>
+                                    <input
+                                        type="text"
+                                        value={editingProduct.purchaseLink || ''}
+                                        onChange={(e) => setEditingProduct({ ...editingProduct, purchaseLink: e.target.value })}
+                                        className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                                        placeholder="https://lynk.id/..."
+                                    />
+                                </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">Format File</label>
                                     <select

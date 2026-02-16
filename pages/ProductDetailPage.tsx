@@ -18,8 +18,9 @@ const ProductDetailPage: React.FC = () => {
     }
 
     const handleBuy = () => {
-        // Redirect to Lynk.id (External)
-        window.open('https://lynk.id/', '_blank');
+        // Redirect to purchase link or fallback to Lynk.id (External)
+        const link = product.purchaseLink || 'https://lynk.id/';
+        window.open(link, '_blank');
     };
 
     return (

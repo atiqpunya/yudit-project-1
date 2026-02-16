@@ -10,6 +10,7 @@ export interface Product {
   level: Level;
   fileType: FileType;
   image: string;
+  purchaseLink?: string;
   isPromo?: boolean;
   isBestSeller?: boolean;
   fileFormat: "XLS" | "PDF" | "PPT" | "DOC";
